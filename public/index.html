@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>シェアハウス図書館</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>📚 シェアハウス図書館</h1>
+    <label class="me">
+      あなたのニックネーム
+      <input id="nickname" maxlength="30" placeholder="例：ささき" autocomplete="nickname">
+    </label>
+  </header>
+
+  <main>
+    <section>
+      <div class="list-head">
+        <h2>本の一覧</h2>
+        <span id="summary" class="summary"></span>
+      </div>
+      <p id="message" class="message" role="status" hidden></p>
+      <ul id="books" class="books"></ul>
+      <p id="empty" class="empty" hidden>まだ本が登録されていません。下のフォームから追加してください。</p>
+    </section>
+
+    <section>
+      <details id="add-panel">
+        <summary><h2>本を登録する</h2></summary>
+        <form id="add-form">
+          <label>ISBN（任意・入れると自動入力）
+            <span class="row">
+              <input name="isbn" inputmode="numeric" maxlength="17" placeholder="978…">
+              <button type="button" id="lookup">検索</button>
+            </span>
+          </label>
+          <label>タイトル<input name="title" required maxlength="200"></label>
+          <label>著者<input name="author" maxlength="200"></label>
+          <input name="coverUrl" type="hidden">
+          <img id="cover-preview" class="cover-preview" alt="" hidden>
+          <label>持ち主のニックネーム<input name="owner" required maxlength="30"></label>
+          <button type="submit" class="primary">登録する</button>
+        </form>
+      </details>
+    </section>
+  </main>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

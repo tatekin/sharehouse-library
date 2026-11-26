@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sharehouse-library",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-26",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    // /api/* だけWorkerで処理し、それ以外は静的ファイルをそのまま返す
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sharehouse-library",
+      // Cloudflareで `npx wrangler d1 create sharehouse-library` を実行し、表示されたIDに置き換える
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "observability": { "enabled": true }
+}
