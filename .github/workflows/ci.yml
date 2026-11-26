@@ -19,3 +19,5 @@ jobs:
         run: npm run typecheck
       - name: テスト
         run: npm test
+      - name: ビルド（wrangler.jsonc とバンドルの確認。デプロイはしない）
+        run: npx wrangler deploy --dry-run

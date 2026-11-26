@@ -17,6 +17,11 @@ function showMessage(text, kind = "error") {
   showMessage.timer = setTimeout(() => (messageEl.hidden = true), 4000);
 }
 
+// PRのプレビューURL（<バージョン>-sharehouse-library.〜.workers.dev）では注意を出す
+if (/^[^.]+-sharehouse-library\./.test(location.hostname)) {
+  $("#preview-banner").hidden = false;
+}
+
 async function api(path, options = {}) {
   const res = await fetch(path, {
     ...options,
@@ -62,10 +67,15 @@ function renderBook(book) {
   );
 
   const button = book.loan
-    ? el("button", { onclick: () => act(book.id, "return") }, "返す")
-    : el("button", { class: "primary", onclick: () => act(book.id, "borrow") }, "借りる");
+    ? el("button", { onclick: () => act(book, "return") }, "返す")
+    : el("button", { class: "primary", onclick: () => act(book, "borrow") }, "借りる");
+  const edit = el(
+    "button",
+    { class: "link", "aria-label": `「${book.title}」を編集`, onclick: () => openEditor(book) },
+    "編集"
+  );
 
-  return el("li", { class: "book" }, cover, info, el("div", { class: "actions" }, button));
+  return el("li", { class: "book" }, cover, info, el("div", { class: "actions" }, button, edit));
 }
 
 async function load() {
@@ -80,15 +90,19 @@ async function load() {
   }
 }
 
-async function act(id, action) {
+async function act(book, action) {
   const nickname = nicknameInput.value.trim();
   if (action === "borrow" && !nickname) {
     showMessage("右上にニックネームを入力してください");
     nicknameInput.focus();
     return;
   }
+  // 押し間違いで他の人の貸出を終わらせないよう確認する
+  if (action === "return" && !confirm(`「${book.title}」を返却済みにしますか？\n（借りている人：${book.loan.borrower}）`)) {
+    return;
+  }
   try {
-    await api(`/api/books/${id}/${action}`, {
+    await api(`/api/books/${book.id}/${action}`, {
       method: "POST",
       body: JSON.stringify({ nickname }),
     });
@@ -98,6 +112,47 @@ async function act(id, action) {
   }
   load();
 }
+
+// 本の編集・削除
+const editDialog = $("#edit-dialog");
+const editForm = $("#edit-form");
+let editing = null;
+
+function openEditor(book) {
+  editing = book;
+  editForm.title.value = book.title;
+  editForm.author.value = book.author ?? "";
+  editForm.owner.value = book.owner;
+  editDialog.showModal();
+}
+
+$("#edit-cancel").addEventListener("click", () => editDialog.close());
+
+editForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const data = Object.fromEntries(new FormData(editForm));
+  try {
+    await api(`/api/books/${editing.id}`, { method: "PATCH", body: JSON.stringify(data) });
+    editDialog.close();
+    showMessage("保存しました", "info");
+  } catch (e) {
+    showMessage(e.message);
+  }
+  load();
+});
+
+$("#delete-book").addEventListener("click", async () => {
+  if (!confirm(`「${editing.title}」を一覧から削除しますか？`)) return;
+  try {
+    await api(`/api/books/${editing.id}`, { method: "DELETE" });
+    editDialog.close();
+    showMessage("削除しました", "info");
+  } catch (e) {
+    editDialog.close();
+    showMessage(e.message);
+  }
+  load();
+});
 
 // ISBNから書誌情報を取得（openBD → Google Books の順に試す）
 async function lookupIsbn(isbn) {

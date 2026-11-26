@@ -74,9 +74,23 @@ form { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
 form label { display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; color: var(--sub); }
 .row { display: flex; gap: 8px; }
 .cover-preview { width: 80px; border-radius: 4px; }
+.book .actions { display: flex; gap: 6px; }
+button.link { border-color: transparent; color: var(--sub); padding: 8px; }
+button.danger { border-color: var(--busy); color: var(--busy); }
+.preview-banner {
+  margin: 0; padding: 8px 16px; text-align: center; font-size: 0.9rem;
+  background: var(--busy); color: #fff;
+}
+dialog {
+  border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px;
+  width: min(440px, calc(100vw - 32px)); background: var(--card); color: var(--ink);
+}
+dialog::backdrop { background: rgb(20 33 61 / 0.4); }
+.dialog-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.dialog-actions .spacer { flex: 1; }
 @media (max-width: 480px) {
   .book { grid-template-columns: 48px 1fr; }
   .book img, .book .noimg { width: 48px; height: 68px; }
   .book .actions { grid-column: 1 / -1; }
-  .book .actions button { width: 100%; }
+  .book .actions button:not(.link) { flex: 1; }
 }
