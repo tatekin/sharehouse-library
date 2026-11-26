@@ -67,7 +67,7 @@
 - [x] GitHubでリポジトリを作成（公開。住人の情報はD1にだけ入り、リポジトリにはコードしかない）
 - [x] Claude GitHub Appをリポジトリにインストール
 - [x] Cloudflareアカウント作成（カード登録なし）、D1データベースを作成
-- [ ] Workersとリポジトリを連携（Workers Builds）
+- [x] Workersとリポジトリを連携（Workers Builds）
 - [x] リポジトリ設定で自動マージを許可し、mainにブランチ保護（CI必須）を設定
 - [x] CIと自動マージ予約のワークフローを追加（`.github/workflows/`）
 

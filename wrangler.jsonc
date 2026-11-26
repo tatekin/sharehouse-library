@@ -3,6 +3,9 @@
   "name": "sharehouse-library",
   "main": "src/index.ts",
   "compatibility_date": "2026-11-26",
+  // *.workers.dev の本番URLと、PRごとのプレビューURLを有効にする（既定値と同じ。警告を消すため明示）
+  "workers_dev": true,
+  "preview_urls": true,
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
