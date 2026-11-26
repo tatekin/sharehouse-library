@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+  <p id="preview-banner" class="preview-banner" hidden>
+    これはPRのプレビュー版です。ここで登録・貸出・削除をすると<strong>本番のデータが変わります</strong>。
+  </p>
   <header>
     <h1>📚 シェアハウス図書館</h1>
     <label class="me">
@@ -48,6 +51,21 @@
       </details>
     </section>
   </main>
+
+  <dialog id="edit-dialog">
+    <form id="edit-form" method="dialog">
+      <h2>本の情報を直す</h2>
+      <label>タイトル<input name="title" required maxlength="200"></label>
+      <label>著者<input name="author" maxlength="200"></label>
+      <label>持ち主のニックネーム<input name="owner" required maxlength="30"></label>
+      <div class="dialog-actions">
+        <button type="button" id="delete-book" class="danger">この本を削除</button>
+        <span class="spacer"></span>
+        <button type="button" id="edit-cancel">やめる</button>
+        <button type="submit" class="primary">保存</button>
+      </div>
+    </form>
+  </dialog>
 
   <script src="/app.js" type="module"></script>
 </body>
