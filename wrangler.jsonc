@@ -13,8 +13,7 @@
     {
       "binding": "DB",
       "database_name": "sharehouse-library",
-      // Cloudflareで `npx wrangler d1 create sharehouse-library` を実行し、表示されたIDに置き換える
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "8c32c043-1443-4310-a517-73dd9dba332c",
       "migrations_dir": "migrations"
     }
   ],
